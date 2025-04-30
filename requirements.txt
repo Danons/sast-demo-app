@@ -1,0 +1,4 @@
+Bandit
+Requests
+Jenkins {Git Plugin, Pipeline Plugin, Warnings}
+Using Linux OS
