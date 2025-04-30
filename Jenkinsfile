@@ -28,10 +28,14 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    // Install dependencies using pip
-                    sh 'python3 -m venv venv'
-                    sh './venv/bin/pip install --upgrade pip'
-                    sh './venv/bin/pip install -r requirements.txt'
+                    // Create a virtual environment
+                    sh 'python3 -m venv ${VENV_DIR}'
+                    
+                    // Upgrade pip
+                    sh './${VENV_DIR}/bin/pip install --upgrade pip'
+                    
+                    // Skip requirements.txt installation if you don't need it
+                    // sh './${VENV_DIR}/bin/pip install -r requirements.txt'  // COMMENT OUT THIS LINE
                 }
             }
         }
