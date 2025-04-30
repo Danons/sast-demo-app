@@ -4,7 +4,7 @@
 		stages {
 			stage('Checkout') {
 				steps {
-					git url: 'https://github.com/your-username/sast-demo-app.git', branch:
+					git url: 'https://github.com/Danons/sast-demo-app.git', branch:
 	'master'
 				}
 			}
