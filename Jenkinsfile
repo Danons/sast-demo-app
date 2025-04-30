@@ -22,6 +22,17 @@ pipeline {
                     . venv/bin/activate
                     bandit -f xml -o bandit-output.xml -r . || true
                 '''
+		// Use the recordIssues step to publish the Bandit report
+                    recordIssues(
+                        tools: [bandit(pattern: 'bandit_report.xml')],
+                        enablePipelineNotifications: true
+                    )
+                    
+                    // Check for specific issues and fail the build if needed
+                    def banditIssues = readFile('bandit_report.xml')
+                    if (banditIssues.contains('High')) {
+                        error 'High severity issues found in Bandit report.'
+                    }
             }
         }
     }
