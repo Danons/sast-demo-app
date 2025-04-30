@@ -24,5 +24,11 @@ pipeline {
                 '''
             }
         }
+	stage('Cleanup') {
+	    steps {
+		sh 'rm -f bandit_report.xml'
+		sh 'rm -f bandit-output.xml'				
+	    }
+	}
     }
 }
