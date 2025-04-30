@@ -22,10 +22,22 @@ pipeline {
                     // Run Bandit and output the results in XML format
                     sh 'bandit -r . -f xml -o bandit_report.xml || true'
 
-                    // Publish the Bandit report using recordIssues (without the invalid parameter)
-                    recordIssues(
-                        tools: [bandit(pattern: 'bandit_report.xml')]
-                    )
+                    // Publish results using a generic parser
+            	    recordIssues(
+                		tool: genericParser(
+                    		pattern: 'bandit_report.xml',
+                    		name: 'Bandit',
+                    		regularExpression: '<issue severity="(.*?)".*?test_id="(.*?)".*?<test_name>(.*?)</test_name>.*?<issue_text>(.*?)</issue_text>.*?<line_number>(\\d+)</line_number>',
+                    		example: '<issue severity="LOW" confidence="HIGH" test_id="B101" test_name="assert_used"><issue_text>Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.</issue_text><line_number>4</line_number>',
+                    		mapping: [
+                        		severity: 1,
+                        		category: 2,
+                        		type: 3,
+                        		message: 4,
+                        		line: 5
+                    		]
+                	)
+            	    )
                     
                     // Check the Bandit report for specific issues
                     def banditIssues = readFile('bandit_report.xml')
