@@ -29,7 +29,7 @@ pipeline {
             steps {
                 script {
                     // Create a virtual environment
-                    sh 'python3 -m venv ${VENV_DIR}'
+                    sh 'python3 -m venv venv'
                     
                     // Upgrade pip
                     sh './${VENV_DIR}/bin/pip install --upgrade pip'
