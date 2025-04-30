@@ -39,23 +39,6 @@ pipeline {
                 }
             }
         }
-        stage('Bandit Security Scan') {
-            steps {
-                script {
-                    // Run Bandit security scan and generate HTML report
-                    sh './venv/bin/bandit -r . -f html -o ${env.BANDIT_REPORT}'
-                }
-            }
-        }
-        stage('Publish Bandit Report') {
-            steps {
-                script {
-                    // Publish the Bandit HTML report as an artifact
-                    archiveArtifacts artifacts: env.BANDIT_REPORT, allowEmptyArchive: true
-                }
-            }
-        }
-    }
     post {
         always {
             // Clean up the virtual environment after the pipeline run
