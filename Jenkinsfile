@@ -22,15 +22,6 @@ pipeline {
                     . venv/bin/activate
                     bandit -f xml -o bandit-output.xml -r . || true
                 '''
-                recordIssues tools: [genericParser( pattern: 'bandit-output.xml',regex: '<Issue severity="(?<severity>.*?)".*?lineNumber="(?<line>\\d+)".*?filename="(?<file>.*?)".*?testID="(?<category>.*?)".*?>(?<message>.*?)</Issue>',mapping: [
-        file: 'file',
-        line: 'line',
-        severity: 'severity',
-        category: 'category',
-        message: 'message'
-    ]
-)]
-
             }
         }
     }
