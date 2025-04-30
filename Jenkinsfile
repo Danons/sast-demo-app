@@ -32,10 +32,10 @@ pipeline {
                     sh 'python3 -m venv venv'
                     
                     // Upgrade pip
-                    sh './${VENV_DIR}/bin/pip install --upgrade pip'
+                    sh './venv/bin/pip install --upgrade pip'
                     
                     // Skip requirements.txt installation if you don't need it
-                    // sh './${VENV_DIR}/bin/pip install -r requirements.txt'  // COMMENT OUT THIS LINE
+                    // sh './venv/bin/pip install -r requirements.txt'  // COMMENT OUT THIS LINE
                 }
             }
         }
