@@ -18,21 +18,23 @@ pipeline {
         }
         stage('SAST Analysis') {
             steps {
-                sh '''
-                    . venv/bin/activate
-                    bandit -f xml -o bandit-output.xml -r . || true
-                '''
-		// Use the recordIssues step to publish the Bandit report
+                script {
+                    // Run Bandit and output the results in XML format
+                    sh 'bandit -r . -f xml -o bandit_report.xml || true'
+
+                    // Publish the Bandit report using recordIssues (without the invalid parameter)
                     recordIssues(
-                        tools: [bandit(pattern: 'bandit_report.xml')],
-                        enablePipelineNotifications: true
+                        tools: [bandit(pattern: 'bandit_report.xml')]
                     )
                     
-                    // Check for specific issues and fail the build if needed
+                    // Check the Bandit report for specific issues
                     def banditIssues = readFile('bandit_report.xml')
+                    
+                    // Custom logic: Fail the build if there are high severity issues
                     if (banditIssues.contains('High')) {
                         error 'High severity issues found in Bandit report.'
                     }
+                }
             }
         }
     }
